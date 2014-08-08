@@ -20,6 +20,6 @@ ActiveRecord::Schema.define(version: 20140808115849) do
     t.datetime "updated_at"
   end
 
-  add_index "configurations", ["key"], name: "index_configurations_on_key"
+  add_index "configurations", ["key"], name: "index_configurations_on_key", unique: true
 
 end
