@@ -14,9 +14,8 @@ RSpec.describe Configuration, :type => :model do
       it { is_expected.to eql 'bar' }
 
       it 'stores the result to cache' do
-        Rails.cache.clear
-        subject
-        expect(Rails.cache.read("configuration::foo")).to eql 'bar'.to_json
+        expect { subject }.to change { Rails.cache.read("configuration::foo") }.
+          from(nil).to('bar'.to_json)
       end
     end
 
@@ -63,7 +62,8 @@ RSpec.describe Configuration, :type => :model do
       end
 
       it 'removes the result from cache' do
-        expect { subject }.to change { Rails.cache.read("configuration::foo") }.from('bar'.to_json).to(nil)
+        expect { subject }.to change { Rails.cache.read("configuration::foo") }.
+          from('bar'.to_json).to(nil)
       end
     end
   end
