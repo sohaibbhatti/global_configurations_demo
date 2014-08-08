@@ -13,12 +13,26 @@ RSpec.describe Configuration, :type => :model do
     end
 
     context 'configuration exists' do
-      before { Configuration.save 'foo', 'already_exist' }
+      before { Configuration.save 'foo', 'already_exists' }
 
       it 'prevents overwriting or duplicate copies' do
         expect { subject }.to raise_error(ActiveRecord::RecordNotUnique)
       end
+    end
+  end
 
+  describe '.read' do
+    subject { Configuration.read 'foo' }
+
+    context 'configuration does not exist' do
+      it 'raises an error' do
+        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'configuration exists' do
+      before { Configuration.save 'foo', 'already_exists' }
+      it { is_expected.to eql 'already_exists' }
     end
   end
 end
