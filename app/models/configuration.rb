@@ -14,6 +14,15 @@ class Configuration < ActiveRecord::Base
     end
   end
 
+  def self.delete(key)
+    if configuration = Configuration.find_by_key(key)
+      configuration.destroy
+      true
+    else
+      raise ActiveRecord::RecordNotFound
+    end
+  end
+
   private
 
   def encode_value

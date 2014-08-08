@@ -36,6 +36,26 @@ RSpec.describe Configuration, :type => :model do
     end
   end
 
+
+  describe '.delete' do
+    subject { Configuration.delete 'foo' }
+
+    context 'configuration does not exist' do
+      it 'raises an exception' do
+        expect { subject }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'configuration exists' do
+      before { Configuration.save 'foo', 'bar' }
+
+      it { is_expected.to eql true }
+      it 'successfully removes the configuration' do
+        expect { subject }.to change { Configuration.count }.by -1
+      end
+    end
+  end
+
   def save_and_validate(key, value)
     Configuration.save key, value
     expect(Configuration.read key).to eql value
