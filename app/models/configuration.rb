@@ -32,17 +32,25 @@ class Configuration < ActiveRecord::Base
   end
 
   def write_to_cache
-    Rails.cache.write "configuration::#{key}", value
+    Rails.cache.write cache_key, value
   end
 
   def delete_from_cache
-    Rails.cache.delete "configuration::#{key}"
+    Rails.cache.delete cache_key
   end
 
   def self.fetch_record(key)
-    Rails.cache.fetch("configuration::#{key}") do
+    Rails.cache.fetch(cache_key(key)) do
       config = Configuration.find_by_key(key)
       config.value if config
     end
+  end
+
+  def self.cache_key(key)
+    "configuration::#{key}"
+  end
+
+  def cache_key
+    self.class.cache_key key
   end
 end
