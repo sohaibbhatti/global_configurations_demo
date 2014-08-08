@@ -28,5 +28,5 @@
 
 
 ## Potential additions
- - A method that returns all the existing settings. Though it wouldn't make sense 
+ - A method that returns all the existing settings. Though its existence depends on how the model is being used.
  - If the settings aren't critical, Have an update method 
