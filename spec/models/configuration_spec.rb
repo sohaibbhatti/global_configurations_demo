@@ -36,18 +36,29 @@ RSpec.describe Configuration, :type => :model do
     end
   end
 
+  def save_and_validate(key, value)
+    Configuration.save key, value
+    expect(Configuration.read key).to eql value
+  end
+
   describe 'Format Support' do
     it 'supports strings' do
-      Configuration.save 'foo', 'bar'
-      expect(Configuration.read 'foo').to eql 'bar'
-
-      Configuration.save 'foo_new', ''
-      expect(Configuration.read 'foo_new').to eql ''
+      save_and_validate 'foo', 'bar'
+      save_and_validate 'foo_new', ''
     end
 
     it 'supports numbers' do
-      Configuration.save 'foo', 123
-      expect(Configuration.read 'foo').to eql 123
+      save_and_validate 'foo', 123
+      save_and_validate 'foo_new', 123.456
+    end
+
+    it 'supports booleans' do
+      save_and_validate 'foo', true
+      save_and_validate 'foo_new', false
+    end
+
+    it 'supports null' do
+      save_and_validate 'foo', nil
     end
   end
 end
