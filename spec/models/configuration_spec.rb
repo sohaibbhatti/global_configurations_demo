@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Configuration, :type => :model do
+  before { Rails.cache.clear }
+
   describe '.save' do
     subject { Configuration.save 'foo', 'bar' }
 
@@ -10,6 +12,12 @@ RSpec.describe Configuration, :type => :model do
       end
 
       it { is_expected.to eql 'bar' }
+
+      it 'stores the result to cache' do
+        Rails.cache.clear
+        subject
+        expect(Rails.cache.read("configuration::foo")).to eql 'bar'.to_json
+      end
     end
 
     context 'configuration exists' do
@@ -52,6 +60,10 @@ RSpec.describe Configuration, :type => :model do
       it { is_expected.to eql true }
       it 'successfully removes the configuration' do
         expect { subject }.to change { Configuration.count }.by -1
+      end
+
+      it 'removes the result from cache' do
+        expect { subject }.to change { Rails.cache.read("configuration::foo") }.from('bar'.to_json).to(nil)
       end
     end
   end
