@@ -35,4 +35,19 @@ RSpec.describe Configuration, :type => :model do
       it { is_expected.to eql 'already_exists' }
     end
   end
+
+  describe 'Format Support' do
+    it 'supports strings' do
+      Configuration.save 'foo', 'bar'
+      expect(Configuration.read 'foo').to eql 'bar'
+
+      Configuration.save 'foo_new', ''
+      expect(Configuration.read 'foo_new').to eql ''
+    end
+
+    it 'supports numbers' do
+      Configuration.save 'foo', 123
+      expect(Configuration.read 'foo').to eql 123
+    end
+  end
 end
