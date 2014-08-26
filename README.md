@@ -22,7 +22,6 @@
  ```
 
 ## Decisions and justifications
- - The Interface prevents users from being able to update existing configurations. The thought process behind this is that configurations are generally of a high importance. In order to modify a configuration the existing configuration would have to be destroyed followed by creating the new one. This serves as a means to emphasize the importance of the changes.  If however, the configurations aren't too important and are subject to being changed often, having an update method or perhaps incorporating updations into the save functionality might make sense.  
  - The validations are at the database level.
  - In the events of failures exceptions are raised. Since this model deals with configurations which might have an high impact on the overall code, raising an exception makes more sense. Returning falses or nils might go unnoticed.
 
